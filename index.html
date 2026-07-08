@@ -222,6 +222,8 @@
     </style>
 </head>
 <body>
+    
+<audio id="bg-music" src="jay-sean-ride-it.mp3" loop></audio>
 
 <div class="app-wrapper">
 
@@ -601,6 +603,12 @@
     renderLoop();
 
     function unlockSite() {
+        // ЗАПУСК ТРЕКА ПОСЛЕ НАЖАТИЯ КНОПКИ С ОВЕРЛЕЯ
+        const music = document.getElementById('bg-music');
+        if (music) {
+            music.play().catch(error => console.log("Автовоспроизведение заблокировано:", error));
+        }
+
         launchExplosion();
         const mainContent = document.getElementById('main-site-content');
         mainContent.style.display = 'block';
