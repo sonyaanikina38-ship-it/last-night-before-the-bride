@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LAST RIDE BEFORE THE BRIDE</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Montserrat:wght@400;600;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bubblegum: '#ff82b2',
+                        babypink: '#ffd1dc',
+                        powderpink: '#ffb2d1',
+                        pearlwhite: '#fefefa',
+                        latexblack: '#0c0c0c',
+                        latexdeep: '#161616',
+                        chromesilver: '#e2e8f0',
+                        rosegold: '#b76e79',
+                    },
+                    fontFamily: {
+                        comfortaa: ['Comfortaa', 'cursive'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                        syne: ['Syne', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #0c0c0c;
+            color: #fefefa;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+            background-color: #0c0c0c;
+            box-shadow: 0 0 50px rgba(255, 130, 178, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .snap-container {
+            flex-grow: 1;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            height: 100%;
+            width: 100%;
+            display: block;
+        }
+        .snap-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .snap-section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            min-height: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .dynamic-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a0911 35%, #330b1c 70%, #0c0c0c 100%);
+            background-size: 400% 400%;
+            animation: gradientMove 16s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .latex-shiny {
+            background: linear-gradient(145deg, #1f1f1f 0%, #080808 100%);
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.15), 
+                        0 12px 24px rgba(0,0,0,0.7),
+                        0 0 20px rgba(255, 130, 178, 0.2);
+            border: 1px solid rgba(255, 130, 178, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .latex-shiny::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 42%,
+                rgba(255, 255, 255, 0.12) 50%,
+                rgba(255, 255, 255, 0) 58%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(35deg);
+            animation: glossSweep 7s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes glossSweep {
+            0% { transform: translate(-25%, -25%) rotate(35deg); }
+            100% { transform: translate(25%, 25%) rotate(35deg); }
+        }
+
+        .glass-card {
+            background: rgba(255, 130, 178, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(255, 130, 178, 0.2);
+        }
+
+        .chrome-text {
+            background: linear-gradient(135deg, #ffffff 15%, #ff82b2 45%, #e2e8f0 75%, #b76e79 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.6));
+        }
+
+        .floating-accent {
+            animation: floatUpDown 5s ease-in-out infinite alternate;
+        }
+        @keyframes floatUpDown {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-12px) rotate(4deg); }
+        }
+
+        .pulsing-accent {
+            animation: pulseSlow 2.5s ease-in-out infinite;
+        }
+        @keyframes pulseSlow {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.03); opacity: 1; }
+        }
+
+        /* Анимация вращения дискошара */
+        .rotate-discoball {
+            animation: spinDisco 12s linear infinite;
+        }
+        @keyframes spinDisco {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #welcome-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999; 
+            background: #0c0c0c;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 1.5rem;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .chrome-btn {
+            background: linear-gradient(135deg, #ff82b2 0%, #ffb2d1 50%, #ffffff 100%);
+            box-shadow: 0 0 25px rgba(255, 130, 178, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+            transition: transform 0.1s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        .chrome-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 35px rgba(255, 130, 178, 0.9);
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+    <!-- Холст анимаций частиц -->
+    <canvas id="particle-canvas" class="absolute inset-0 pointer-events-none" style="z-index: 5;"></canvas>
+
+    <!-- 1. ЭКРАН ВХОДА -->
+    <div id="welcome-overlay">
+        <div class="dynamic-bg"></div>
+        <div class="glass-card p-8 rounded-[35px] text-center w-full max-w-[360px] relative z-50 border border-babypink/30">
+            <div class="flex justify-center gap-4 mb-5">
+                <span class="text-3xl animate-bounce">🤠</span>
+                <span class="text-3xl">💋</span>
+                <span class="text-3xl animate-bounce" style="animation-delay: 0.2s">✨</span>
+            </div>
+            
+            <h2 class="font-syne text-2xl font-black text-pearlwhite mb-3 tracking-wider">⚠️ ВНИМАНИЕ!</h2>
+            
+            <p class="font-montserrat text-babypink/90 text-sm leading-relaxed mb-6">
+                После сканирования вы автоматически соглашаетесь участвовать во всех конкурсах, делать миллион фотографий и отрываться по полной.
+            </p>
+            
+            <button id="agree-btn" onclick="unlockSite()" class="chrome-btn w-full py-4 rounded-full font-syne text-base font-bold text-latexblack tracking-wider uppercase relative z-50">
+                💖 Я согласна!
+            </button>
+        </div>
+    </div>
+
+
+    <!-- ГЛАВНЫЙ КОНТЕНТ САЙТА -->
+    <div class="snap-container" id="main-site-content" style="display: none;">
+
+        <!-- ЭКРАН 1: ГЛАВНЫЙ -->
+        <section class="snap-section">
+            <div class="dynamic-bg"></div>
+            
+            <div class="absolute top-6 left-6 right-6 flex justify-between items-center z-10">
+                <span class="text-xl">🎀</span>
+                <span class="font-syne text-[10px] uppercase tracking-[0.2em] text-powderpink font-bold">Luxury Bachelorette</span>
+                <span class="text-xl">🎀</span>
+            </div>
+
+            <div class="flex-grow flex flex-col justify-center items-center relative z-10 w-full pt-8">
+                <!-- ФОТО 1: портрет вместо шляпы -->
+                <div class="w-52 h-52 mb-4 floating-accent flex items-center justify-center overflow-hidden rounded-full border-4 border-bubblegum/40 shadow-[0_0_25px_rgba(255,130,178,0.5)]">
+                    <img src="лиза-removebg-preview.png" alt="Bride" class="w-full h-full object-cover">
+                </div>
+
+                <h1 class="font-syne text-[36px] leading-[1.0] font-black text-center tracking-tight uppercase">
+                    <span class="chrome-text">LAST RIDE</span><br>
+                    <span class="text-pearlwhite text-[28px] block mt-1 tracking-widest font-light">BEFORE THE</span>
+                    <span class="chrome-text block text-[42px] font-black mt-1">BRIDE</span>
+                </h1>
+                
+                <p class="font-comfortaa text-[12px] text-babypink tracking-[0.05em] mt-2 mb-4 uppercase font-bold">
+                    The Wildest Night Before “I Do”
+                </p>
+
+                <div class="latex-shiny py-3 px-6 rounded-2xl max-w-[300px] text-center border border-bubblegum/40">
+                    <p class="text-xs font-semibold text-pearlwhite m-0">
+                        💋 Последняя вечеринка перед счастливым “Да”.
+                    </p>
+                </div>
+            </div>
+
+            <div class="relative z-10 text-center pulsing-accent mt-auto">
+                <button onclick="scrollToId('slide-timer')" class="flex flex-col items-center gap-1 text-[11px] font-syne uppercase tracking-widest text-bubblegum">
+                    <span>Scroll</span>
+                    <span class="text-lg">↓</span>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ЭКРАН 2: ТАЙМЕР -->
+        <section class="snap-section" id="slide-timer">
+            <div class="dynamic-bg"></div>
+
+            <div class="w-full relative z-10 flex flex-col items-center justify-center flex-grow pt-4">
+                <!-- ФОТО 2: Кольцо вместо смайликов сапог -->
+                <div class="w-24 h-24 mb-3 floating-accent flex items-center justify-center">
+                    <img src="Bridal_Cocktail_Napkins_-_Ring_Finger___One_Size-removebg-preview.png" alt="Ring" class="w-full h-full object-contain filter drop-shadow-[0_4px_10px_rgba(255,130,178,0.4)]">
+                </div>
+
+                <h2 class="font-syne text-xl font-bold text-pearlwhite tracking-widest uppercase mb-5 text-center">
+                    До начала остается
+                </h2>
+
+                <div class="grid grid-cols-4 gap-2 w-full max-w-[340px] mb-6">
+                    <div class="glass-card flex flex-col justify-center items-center py-4 rounded-xl border border-white/20">
+                        <span id="days" class="text-xl font-bold font-syne text-bubblegum">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-babypink mt-1">Дней</span>
+                    </div>
+                    <div class="glass-card flex flex-col justify-center items-center py-4 rounded-xl border border-white/20">
+                        <span id="hours" class="text-xl font-bold font-syne text-bubblegum">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-babypink mt-1">Часов</span>
+                    </div>
+                    <div class="glass-card flex flex-col justify-center items-center py-4 rounded-xl border border-white/20">
+                        <span id="minutes" class="text-xl font-bold font-syne text-bubblegum">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-babypink mt-1">Минут</span>
+                    </div>
+                    <div class="glass-card flex flex-col justify-center items-center py-4 rounded-xl border border-white/20 pulsing-accent">
+                        <span id="seconds" class="text-xl font-bold font-syne text-pearlwhite">00</span>
+                        <span class="text-[9px] uppercase tracking-wider text-babypink mt-1">Секунд</span>
+                    </div>
+                </div>
+
+                <div class="latex-shiny w-full max-w-[340px] p-4 rounded-2xl border border-bubblegum/30 mb-6 flex justify-around text-center">
+                    <div>
+                        <p class="text-[9px] uppercase tracking-widest text-babypink">Дата</p>
+                        <p class="text-sm font-bold text-pearlwhite">18 июля 2026</p>
+                    </div>
+                    <div class="w-[1px] bg-white/20"></div>
+                    <div>
+                        <p class="text-[9px] uppercase tracking-widest text-babypink">Время</p>
+                        <p class="text-sm font-bold text-pearlwhite">18:00</p>
+                    </div>
+                </div>
+
+                <button onclick="downloadICS()" class="chrome-btn w-full max-w-[340px] py-4 rounded-full font-syne text-xs font-bold text-latexblack tracking-wider uppercase">
+                    📅 Добавить в календарь
+                </button>
+            </div>
+            
+            <div class="text-center opacity-40 text-xs tracking-widest z-10 text-babypink">⛓️ 🖤 ⛓️</div>
+        </section>
+
+
+        <!-- ЭКРАН 3: ПЛЕЙЛИСТ -->
+        <section class="snap-section" id="slide-playlist">
+            <div class="dynamic-bg"></div>
+
+            <div class="w-full relative z-10 flex flex-col items-center justify-center flex-grow">
+                <div class="text-3xl mb-4 floating-accent">🎵 ⭐ 💋</div>
+
+                <h2 class="font-syne text-2xl font-black text-pearlwhite tracking-widest uppercase mb-4 text-center">
+                    Tonight’s Soundtrack
+                </h2>
+
+                <div class="latex-shiny w-full max-w-[340px] p-6 rounded-[30px] border border-bubblegum/40 text-center mb-6">
+                    <!-- ФОТО 4: дискошар на пластинке -->
+
+                    <div class="w-28 h-28 mx-auto rounded-full bg-black border-4 border-double border-bubblegum/50 flex items-center justify-center relative shadow-lg pulsing-accent overflow-hidden">
+                        <!-- Добавлен класс rotate-discoball для вращения -->
+                        <img src="discoball.jpg" alt="Disco Ball" class="w-full h-full object-cover rotate-discoball">
+                    </div>
+                    
+                    <h3 class="font-syne text-lg font-bold text-pearlwhite mt-5 mb-2 tracking-wide">BEST PLAYLIST EVER</h3>
+                    <!-- Замененная фраза -->
+                    <p class="text-[11px] text-babypink/80 max-w-[240px] mx-auto leading-relaxed">
+                        Сeksi-хиты и самая горячая музыка для лучшей ночи!
+                    </p>
+                </div>
+
+                <a href="https://music.yandex.ru/users/anik.sonya/playlists/1006?ref_id=E7A053C3-3EB6-4650-834B-BB337B339186&utm_medium=copy_link" target="_blank" class="chrome-btn w-full max-w-[340px] py-4 rounded-full font-syne text-xs font-bold text-latexblack tracking-wider uppercase text-center block">
+                    Включить плейлист
+                </a>
+            </div>
+        </section>
+
+
+        <!-- ЭКРАН 4: ЛОКАЦИЯ -->
+        <section class="snap-section" id="slide-location">
+            <div class="dynamic-bg"></div>
+
+            <div class="w-full relative z-10 flex flex-col items-center justify-center flex-grow">
+                <div class="text-3xl mb-3 floating-accent">📍 💎 🎀</div>
+
+                <h2 class="font-syne text-xl font-black text-pearlwhite tracking-widest uppercase mb-5 text-center max-w-[300px]">
+                    Где пройдет самая безумная ночь?
+                </h2>
+
+                <div class="glass-card w-full max-w-[340px] p-5 rounded-[30px] border border-white/20 text-center mb-6">
+                    <!-- ФОТО 5: дом идеально вписан в изначальный прямоугольник -->
+                    <div class="w-full h-40 rounded-xl overflow-hidden mb-4 border border-babypink/20 shadow-md">
+                        <img src="дом.jpg" alt="House Location" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <h3 class="font-syne text-xl font-extrabold text-pearlwhite tracking-wider mb-1">ГрафДом</h3>
+                    <p class="text-xs text-babypink/90 leading-relaxed px-2">
+                        Премиальная локация для незабываемого праздника.
+                    </p>
+                </div>
+
+                <a href="https://travel.yandex.ru/hotels/ryazan-oblast/grafdom/" target="_blank" class="chrome-btn w-full max-w-[340px] py-4 rounded-full font-syne text-xs font-bold text-latexblack tracking-wider uppercase text-center block">
+                    Открыть место
+                </a>
+            </div>
+        </section>
+
+
+        <!-- ЭКРАН 5: КОДЕКС -->
+        <section class="snap-section" id="slide-code">
+            <div class="dynamic-bg"></div>
+
+            <div class="w-full relative z-10 flex flex-col items-center justify-start flex-grow pt-2">
+                <h2 class="font-syne text-xl font-black text-pearlwhite tracking-widest uppercase mb-4 text-center">
+                    🤠 Кодекс ковбойш
+                </h2>
+
+                <div class="flex gap-4 overflow-x-auto w-full px-4 py-2 snap-x snap-mandatory no-scrollbar">
+                    <div class="glass-card flex-shrink-0 w-[240px] p-5 rounded-[24px] snap-center flex flex-col justify-between border border-babypink/30">
+                        <div class="text-3xl">💋</div>
+                        <p class="text-xs text-pearlwhite font-medium mt-3 leading-relaxed">
+                            Дарить невесте самые громкие комплименты.
+                        </p>
+                        <div class="text-right text-[10px] font-syne text-bubblegum/60 font-bold mt-2">01</div>
+                    </div>
+
+                    <div class="latex-shiny flex-shrink-0 w-[240px] p-5 rounded-[24px] snap-center flex flex-col justify-between border border-bubblegum/40">
+                        <div class="text-3xl">📸</div>
+                        <p class="text-xs text-pearlwhite font-medium mt-3 leading-relaxed">
+                            Сделать столько фотографий, чтобы памяти телефона стало мало.
+                        </p>
+                        <div class="text-right text-[10px] font-syne text-bubblegum/60 font-bold mt-2">02</div>
+                    </div>
+
+                    <div class="glass-card flex-shrink-0 w-[240px] p-5 rounded-[24px] snap-center flex flex-col justify-between border border-babypink/30">
+                        <div class="text-3xl">🥂</div>
+                        <p class="text-xs text-pearlwhite font-medium mt-3 leading-relaxed">
+                            Поднимать бокалы только за любовь и дружбу.
+                        </p>
+                        <div class="text-right text-[10px] font-syne text-bubblegum/60 font-bold mt-2">03</div>
+                    </div>
+
+                    <div class="latex-shiny flex-shrink-0 w-[240px] p-5 rounded-[24px] snap-center flex flex-col justify-between border border-bubblegum/40">
+                        <div class="text-3xl">✨</div>
+                        <p class="text-xs text-pearlwhite font-medium mt-3 leading-relaxed">
+                            Танцевать так, будто никто не смотрит.
+                        </p>
+                        <div class="text-right text-[10px] font-syne text-bubblegum/60 font-bold mt-2">04</div>
+                    </div>
+
+                    <div class="glass-card flex-shrink-0 w-[240px] p-5 rounded-[24px] snap-center flex flex-col justify-between border border-babypink/30">
+                        <div class="text-3xl">🤠</div>
+                        <p class="text-xs text-pearlwhite font-medium mt-3 leading-relaxed">
+                            Быть самыми развратными ковбойшами на Диком Западе.
+                        </p>
+                        <div class="text-right text-[10px] font-syne text-bubblegum/60 font-bold mt-2">05</div>
+                    </div>
+
+                    <div class="latex-shiny flex-shrink-0 w-[240px] p-5 rounded-[24px] snap-center flex flex-col justify-between border border-bubblegum/40">
+                        <div class="text-3xl">💖</div>
+                        <p class="text-xs text-pearlwhite font-medium mt-3 leading-relaxed">
+                            Сделать этот вечер незабываемым.
+                        </p>
+                        <div class="text-right text-[10px] font-syne text-bubblegum/60 font-bold mt-2">06</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="font-comfortaa text-[10px] text-babypink/60 z-10 text-center animate-pulse mt-auto">
+                ← Свайп влево для чтения →
+            </p>
+        </section>
+
+
+        <!-- ЭКРАН 6: ФИНАЛ -->
+        <section class="snap-section" id="slide-finale">
+            <div class="dynamic-bg"></div>
+
+            <div class="w-full relative z-10 flex flex-col items-center justify-center flex-grow text-center pt-6">
+                <!-- ФОТО 3: Плетка добавлена над заголовком -->
+                <div class="w-28 h-28 mb-3 floating-accent flex items-center justify-center">
+                    <img src="плетка-removebg-preview.png" alt="Whip Accent" class="w-full h-full object-contain filter drop-shadow-[0_4px_12px_rgba(255,130,178,0.5)]">
+                </div>
+
+                <h2 class="font-syne text-3xl font-black text-pearlwhite tracking-tighter uppercase mb-1">
+                    <span class="chrome-text block text-4xl">Saddle Up,</span>
+                    <span class="text-bubblegum block text-3xl">Cowgirls</span>
+                </h2>
+
+                <p class="font-comfortaa text-sm text-babypink font-bold tracking-widest uppercase mb-8">
+                    Tonight We Ride
+                </p>
+
+                <button id="final-ride-btn" onclick="triggerFinaleSurprise()" class="chrome-btn w-full max-w-[340px] py-4 rounded-full font-syne text-base font-black text-latexblack tracking-widest uppercase pulsing-accent">
+                    💕 LET’S RIDE
+                </button>
+            </div>
+
+            <div id="countdown-status-text" class="text-babypink/60 text-[11px] tracking-widest font-syne uppercase mt-auto z-10">
+                Are you ready?
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resizeCanvas() {
+        const parent = canvas.parentElement;
+        width = canvas.width = parent.clientWidth;
+        height = canvas.height = parent.clientHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const particlePool = [];
+    const emojiElements = ['✨', '⭐', '💕', '🌸', '💎', '💋'];
+
+    class VisualParticle {
+        constructor(x, y, isBlast = false) {
+            this.x = x || Math.random() * width;
+            this.y = y || (isBlast ? height / 2 : Math.random() * height);
+            this.emoji = emojiElements[Math.floor(Math.random() * emojiElements.length)];
+            
+            if (isBlast) {
+                const randAngle = Math.random() * Math.PI * 2;
+                const randSpeed = 4 + Math.random() * 7;
+                this.vx = Math.cos(randAngle) * randSpeed;
+                this.vy = Math.sin(randAngle) * randSpeed - 2;
+                this.size = 22 + Math.random() * 20;
+                this.life = 1.0;
+                this.decay = 0.015 + Math.random() * 0.015;
+            } else {
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = -(0.2 + Math.random() * 0.5);
+                this.size = 14 + Math.random() * 14;
+                this.life = 0.4 + Math.random() * 0.6;
+                this.decay = 0.001;
+            }
+            this.rotation = Math.random() * Math.PI;
+            this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.rotation += this.rotationSpeed;
+            this.life -= this.decay;
+
+            if (this.y < -30 && this.decay < 0.01) {
+                this.y = height + 30;
+                this.x = Math.random() * width;
+                this.life = 1.0;
+            }
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation);
+            ctx.globalAlpha = Math.max(0, this.life);
+            ctx.font = this.size + 'px serif';
+            ctx.fillText(this.emoji, -this.size / 2, this.size / 2);
+            ctx.restore();
+        }
+    }
+
+    for (let i = 0; i < 35; i++) {
+        particlePool.push(new VisualParticle());
+    }
+
+    function launchExplosion() {
+        for (let i = 0; i < 70; i++) {
+            particlePool.push(new VisualParticle(width / 2, height / 2, true));
+        }
+    }
+
+    function renderLoop() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particlePool.length - 1; i >= 0; i--) {
+            const p = particlePool[i];
+            p.update();
+            p.draw();
+            if (p.life <= 0 && p.decay > 0.01) {
+                particlePool.splice(i, 1);
+            }
+        }
+        requestAnimationFrame(renderLoop);
+    }
+    renderLoop();
+
+    function unlockSite() {
+        launchExplosion();
+        const mainContent = document.getElementById('main-site-content');
+        mainContent.style.display = 'block';
+
+        const overlay = document.getElementById('welcome-overlay');
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            overlay.remove();
+        }, 500);
+    }
+
+    function scrollToId(id) {
+        const target = document.getElementById(id);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    function triggerFinaleSurprise() {
+        launchExplosion();
+        setTimeout(launchExplosion, 350);
+        setTimeout(launchExplosion, 700);
+        
+        const textLabel = document.getElementById('countdown-status-text');
+        textLabel.style.fontSize = '16px';
+        textLabel.style.color = '#ff82b2';
+        textLabel.style.fontWeight = 'bold';
+        textLabel.innerHTML = "See You at 18:00 💖";
+    }
+
+    const targetTime = new Date('2026-07-18T18:00:00').getTime();
+    function refreshTimer() {
+        const currentTime = new Date().getTime();
+        const diff = targetTime - currentTime;
+
+        if (diff < 0) return;
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = String(d).padStart(2, '0');
+        document.getElementById('hours').innerText = String(h).padStart(2, '0');
+        document.getElementById('minutes').innerText = String(m).padStart(2, '0');
+        document.getElementById('seconds').innerText = String(s).padStart(2, '0');
+    }
+    refreshTimer();
+    setInterval(refreshTimer, 1000);
+
+    function downloadICS() {
+        const icsBody = "BEGIN:VCALENDAR\n" +
+            "VERSION:2.0\n" +
+            "PRODID:-//Last Ride//Bachelorette Party//RU\n" +
+            "BEGIN:VEVENT\n" +
+            "UID:" + new Date().getTime() + "@lastride.party\n" +
+            "DTSTAMP:20260718T180000Z\n" +
+            "DTSTART:20260718T150000Z\n" + 
+            "DTEND:20260719T030000Z\n" + 
+            "SUMMARY:💖 Девичник\n" +
+            "LOCATION:ГрафДом\n" +
+            "DESCRIPTION:Последняя вечеринка перед свадьбой.\n" +
+            "END:VEVENT\n" +
+            "END:VCALENDAR";
+
+        const blob = new Blob([icsBody], { type: 'text/calendar;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.setAttribute('download', 'bachelorette_party.ics');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+
+</body>
+</html>
